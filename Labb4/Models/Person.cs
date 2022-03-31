@@ -9,11 +9,12 @@ namespace Labb4.Models
     public class Person
     {
         [Key]
-        public int ID { get; set; }
+        public int PersonID { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         public string phoneNr { get; set; }
         // One-to-many
         public ICollection<Interests> interests { get; set; }
+        public Websites website { get; set; }
     }
 }

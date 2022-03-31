@@ -1,4 +1,5 @@
 using Labb4.Models;
+using Labb4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,8 +29,19 @@ namespace Labb4
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            // EF
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+
+            //EF SQL provider
+            services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+
+            //Repos
+            services.AddScoped<IPersonRepository<Person>, PersonRepository>();
+            services.AddScoped<IInterestRepository<Interests>, InterestRepository>();
+            services.AddScoped<IWebsiteRepository<Websites>, WebsiteRepository>();
+
+            //Newtonsoft
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling
+            = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
